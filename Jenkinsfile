@@ -1,42 +1,21 @@
 pipeline {
     agent any
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/YOUR-USERNAME/YOUR-REPO.git'
+                git branch: 'main', 
+                url: 'https://github.com/OlegBon123/python-jenkins-demo.git'
             }
         }
-        
-        stage('Setup Python') {
-            steps {
-                sh 'python --version'
-                sh 'pip --version'
-            }
-        }
-        
         stage('Install Dependencies') {
             steps {
                 sh 'pip install -r requirements.txt'
             }
         }
-        
-        stage('Run Tests') {
+        stage('Test') {
             steps {
-                sh 'pytest tests/ --cov=calculator --cov-report=xml'
+                sh 'python -m pytest tests/'  // Або ваша команда для тестів
             }
-            post {
-                always {
-                    junit '**/test-reports/*.xml'
-                    cobertura coberturaReportFile: '**/coverage.xml'
-                }
-            }
-        }
-    }
-    
-    post {
-        always {
-            echo 'Pipeline completed'
         }
     }
 }
