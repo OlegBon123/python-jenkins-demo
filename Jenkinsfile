@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    
     stages {
         stage('Checkout') {
             steps {
@@ -7,14 +8,23 @@ pipeline {
                 url: 'https://github.com/OlegBon123/python-jenkins-demo.git'
             }
         }
-        stage('Install Dependencies') {
+        
+        stage('Setup') {
             steps {
-                sh 'pip install -r requirements.txt'
+                bat 'python --version'
+                bat 'pip --version'
             }
         }
+        
+        stage('Install Dependencies') {
+            steps {
+                bat 'pip install -r requirements.txt'
+            }
+        }
+        
         stage('Test') {
             steps {
-                sh 'python -m pytest tests/'  // Або ваша команда для тестів
+                bat 'python -m pytest tests/'
             }
         }
     }
